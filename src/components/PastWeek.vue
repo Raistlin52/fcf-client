@@ -14,9 +14,7 @@
             <td class="money-column">{{starting_bankroll.toLocaleString({}, {style: "currency", currency: "USD", minimumFractionDigits: 0}) }}</td>
         </tr>
         <template v-for="b in placed_bets">
-            // eslint-plugin-vue-disable-next-line
             <tr><td colspan=3></td></tr>
-            // eslint-plugin-vue-disable-next-line
             <tr :class="'bet-' + b.result">
                 <td colspan=2 v-html="PrintHTMLBetHeader(b)"></td>
                 <td class="money-column">{{( b.payout > 0 ? b.payout : -1 * b.amount).toLocaleString({}, {style: "currency", currency: "USD", minimumFractionDigits: 0})}}</td>
