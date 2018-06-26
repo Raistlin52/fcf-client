@@ -1,4 +1,26 @@
 <template>
+  <v-app id="app">
+    <!-- <v-navigation-drawer app></v-navigation-drawer> -->
+    <app-toolbar app />
+    <v-content>
+      <v-container fluid style="padding: 4px">
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+    <!-- <v-footer app></v-footer> -->
+  </v-app>
+</template>
+
+<script>
+import AppToolbar from '@/components/AppToolbar'
+
+export default {
+  name: 'App',
+  components: {AppToolbar}
+}
+</script>
+
+<!--<template>     What was originally supplied from template
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -6,7 +28,7 @@
     </div>
     <router-view/>
   </div>
-</template>
+</template>    -->
 
 <style>
 #app {
