@@ -7,6 +7,9 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// Initalize our game data
+store.commit('read_game_data')
+
 new Vue({
   router,
   store,

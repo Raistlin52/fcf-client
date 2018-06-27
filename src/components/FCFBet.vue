@@ -2,7 +2,7 @@
   <div class="combo-bet">
     <span><label class="heading-label">Bankroll: </label>{{bankroll.toLocaleString({}, {style: "currency", currency: "USD", minimumFractionDigits: 0}) }}</span><br>
     <label class="heading-label">Placed Bets:</label>
-    <div class="previous-bets" v-for="b in placed_bets" :key="b.id">
+    <div class="previous-bets" v-for="b in placed_bets" :key="b.datetime">
         <span v-html="PrintHTMLBet(b)"></span><br>
     </div>
     <legend>You can place combo bets on up to 10 games</legend>
@@ -46,76 +46,76 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(game, key) in games_of_the_week" :key="key">
+          <tr v-for="game in games_of_the_week" :key="game.id">
               <td class="game-header">
                 <div class="matchup">{{game.away}} @ {{game.home}}</div>
-                <div class="gamedate">{{game.gamedate | weekdayshortdate}}</div>
-                <div class="gametime">{{game.gamedate | timewithzone}}</div>
+                <div class="gamedate">{{game.game_time | weekdayshortdate}}</div>
+                <div class="gametime">{{game.game_time | timewithzone}}</div>
                 <div class="network">{{game.network}}</div>
               </td>
               <td class="button-group">
                 <div id="ck-button">
-                  <label v-bind:for="key + '.ml1'">
+                  <label v-bind:for="game.id + '.ml1'">
                     <input type="checkbox"
-                      v-bind:id="key + '.ml1'"
-                      v-bind:value="{game:key, leg_type:'moneyline', leg_line:game.ml1.team + ' ' + game.ml1.odds, odds:game.ml1.odds}"
+                      v-bind:id="game.id + '.ml1'"
+                      v-bind:value="{game:game.id, leg_type:'moneyline', leg_line:game.away + ' ' + game.money_line_away, odds:game.money_line_away}"
                       v-model="legs"
                       v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.ml1.team}} {{game.ml1.odds}}</span>
+                    <span>{{game.away}} {{game.money_line_away}}</span>
                   </label>
                 </div>
                 <div id="ck-button">
-                  <label v-bind:for="key + '.ml2'">
+                  <label v-bind:for="game.id + '.ml2'">
                     <input type="checkbox"
-                      v-bind:id="key + '.ml2'"
-                      v-bind:value="{game:key, leg_type:'moneyline', leg_line:game.ml2.team + ' ' + game.ml2.odds, odds:game.ml2.odds}"
+                      v-bind:id="game.id + '.ml2'"
+                      v-bind:value="{game:game.id, leg_type:'moneyline', leg_line:game.home + ' ' + game.money_line_home, odds:game.money_line_home}"
                       v-model="legs"
                       v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.ml2.team}} {{game.ml2.odds}}</span>
-                  </label>
-                </div>
-              </td>
-              <td class="button-group">
-                <div id="ck-button">
-                  <label v-bind:for="key + '.sb1'">
-                    <input type="checkbox"
-                      v-bind:id="key + '.sb1'"
-                      v-bind:value="{game:key, leg_type:'spread', leg_line:game.sb1, odds:'-110'}"
-                      v-model="legs"
-                      v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.sb1}}</span>
-                  </label>
-                </div>
-                <div id="ck-button">
-                  <label v-bind:for="key + '.sb2'">
-                    <input type="checkbox"
-                      v-bind:id="key + '.sb2'"
-                      v-bind:value="{game:key, leg_type:'spread', leg_line:game.sb2, odds:'-110'}"
-                      v-model="legs"
-                      v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.sb2}}</span>
+                    <span>{{game.home}} {{game.money_line_home}}</span>
                   </label>
                 </div>
               </td>
               <td class="button-group">
                 <div id="ck-button">
-                  <label v-bind:for="key + '.ou1'">
+                  <label v-bind:for="game.id + '.sb1'">
                     <input type="checkbox"
-                      v-bind:id="key + '.ou1'"
-                      v-bind:value="{game:key, leg_type:'total', leg_line:game.ou1, odds:'-110'}"
+                      v-bind:id="game.id + '.sb1'"
+                      v-bind:value="{game:game.id, leg_type:'spread', leg_line:game.away + ' ' + AwaySpread(game.spread_home), odds:'-110'}"
                       v-model="legs"
                       v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.ou1}}</span>
+                    <span>{{game.away + ' ' + AwaySpread(game.spread_home)}}</span>
                   </label>
                 </div>
                 <div id="ck-button">
-                  <label v-bind:for="key + '.ou2'">
+                  <label v-bind:for="game.id + '.sb2'">
                     <input type="checkbox"
-                    v-bind:id="key + '.ou2'"
-                    v-bind:value="{game:key, leg_type:'total', leg_line:game.ou2, odds:'-110'}"
+                      v-bind:id="game.id + '.sb2'"
+                      v-bind:value="{game:game.id, leg_type:'spread', leg_line:game.home + ' ' + game.spread_home, odds:'-110'}"
+                      v-model="legs"
+                      v-on:change="ToggleLeg($event); UpdateOdds()">
+                    <span>{{game.home + ' ' + game.spread_home}}</span>
+                  </label>
+                </div>
+              </td>
+              <td class="button-group">
+                <div id="ck-button">
+                  <label v-bind:for="game.id + '.ou1'">
+                    <input type="checkbox"
+                      v-bind:id="game.id + '.ou1'"
+                      v-bind:value="{game:game.id, leg_type:'total', leg_line:'▲' + game.over_under, odds:'-110'}"
+                      v-model="legs"
+                      v-on:change="ToggleLeg($event); UpdateOdds()">
+                    <span>{{'▲' + game.over_under}}</span>
+                  </label>
+                </div>
+                <div id="ck-button">
+                  <label v-bind:for="game.id + '.ou2'">
+                    <input type="checkbox"
+                    v-bind:id="game.id + '.ou2'"
+                    v-bind:value="{game:game.id, leg_type:'total', leg_line:'▼' + game.over_under, odds:'-110'}"
                     v-model="legs"
                     v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.ou2}}</span>
+                    <span>{{'▼' + game.over_under}}</span>
                   </label>
                 </div>
               </td>
@@ -157,6 +157,7 @@ import Odds from './Odds'
 import Vue from 'vue'
 import {betPrinter} from './mixins/betPrinter'
 import moment from 'moment-timezone'
+import axios from 'axios'
 
 Vue.filter('weekdayshortdate', function(value) {
   if (value) {
@@ -197,8 +198,8 @@ export default {
         's2017.w7.g15'
       ],
       games_of_the_week: {},
-      placed_bets:
-      [{
+      placed_bets: [],
+      /* [{
         "datetime":"Fri Mar 02 2018 00:27:56 GMT-0600 (CST)",
         "amount":50000,
         "bet_type":"parlay",
@@ -259,10 +260,16 @@ export default {
         "leg_type":"total",
         "leg_line":"▲ 39.5",
         "odds":"-110"}]
-        }
-      ],
+        }  
+      ], */
       legs: [],
       odds: new Odds('10:11')
+    }
+  },
+
+  watch: {
+    '$route' (to, from) {
+      this.$store.state.selected_week = this.$route.params.week_num   // need to make selected week a mutator
     }
   },
 
@@ -284,7 +291,7 @@ export default {
         amount: Number(this.bet_amount),
         bet_type: '',
         oddsString: this.odds.oddsString,
-        // JSON below is needed for Deep Copy - important when saving
+        // JSON below is needed for Deep Copy - important when saving    // There's a better way to so this
         legs: JSON.parse(JSON.stringify(this.legs))
       }
 
@@ -311,9 +318,17 @@ export default {
     // What to do when this object is created
 
     //Build the games_of_the_week object
-    for (let game of this.weekly_schedule) {
-      this.games_of_the_week[game] = this.game_data[game]
-    }
+    axios
+      .get('http://127.0.0.1:8000/games/week/s2017.w7')
+      .then(response => {
+        this.games_of_the_week = response.data
+      })
+      .catch(error => console.log(error))
+
+    
+    //for (let game of this.weekly_schedule) {
+    //  this.games_of_the_week[game] = this.game_data[game]
+    //}
   },
 
   mounted: function () {
@@ -379,6 +394,18 @@ export default {
             this.odds.oddsString = Math.round(totalOdds) + ':1'
           }
         }
+      }
+    },
+
+    AwaySpread: function (homespread) {
+      if (homespread[0] === '-') {
+        return '+' + homespread.slice(1, homespread.length)
+      }
+      else if (homespread[0] === '+') {
+        return '-' + homespread.slice(1, homespread.length)
+      }
+      else {
+        return homespread
       }
     },
 

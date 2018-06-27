@@ -30,7 +30,7 @@ export const betPrinter = {
       return m
     },
     PrintHTMLLeg: function (leg) {
-      let d = new Date(this.game_data[leg.game].gamedate)
+      let d = new Date(this.game_data[leg.game].game_time)
       let m = (d.getMonth() + 1) + '/' + d.getDate() + ' '
       m += this.min3HTML(this.game_data[leg.game].away) + ' @ ' + this.min3HTML(this.game_data[leg.game].home) + ': '
 
@@ -63,7 +63,7 @@ export const betPrinter = {
       return m
     },
     PrintLeg: function (leg) {
-      let d = new Date(this.game_data[leg.game].gamedate)
+      let d = new Date(this.game_data[leg.game].game_time)
       let m = (d.getMonth() + 1) + '/' + d.getDate() + ' '
       m += this.min3(this.game_data[leg.game].away) + ' @ ' + this.min3(this.game_data[leg.game].home) + ': '
 

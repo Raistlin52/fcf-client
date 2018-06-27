@@ -4,7 +4,7 @@
       <v-toolbar-side-icon></v-toolbar-side-icon>
       <v-menu :nudge-width="100">
         <v-toolbar-title class="white--text" slot="activator">
-          <span>Week 7</span>
+          <span>Week {{$store.state.selected_week}}</span>
           <v-icon>arrow_drop_down</v-icon>
         </v-toolbar-title>
         <v-list dark dense>

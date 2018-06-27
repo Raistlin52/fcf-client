@@ -11,6 +11,11 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/week/:week_num',
+      name: 'Week',
+      component: FCFBet
+    },
+    {
       path: '/',
       name: 'AppHome',
       component: AppHome

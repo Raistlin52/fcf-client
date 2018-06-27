@@ -80,7 +80,6 @@ export default new Vuex.Store({
       axios
         .get('http://127.0.0.1:8000/gameswithid/')
         .then(response => {
-          console.log(response)
           state.game_data = response.data
         })
         .catch(error => console.log(error))
