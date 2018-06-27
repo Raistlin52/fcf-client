@@ -14,12 +14,12 @@
             <td class="money-column">{{starting_bankroll.toLocaleString({}, {style: "currency", currency: "USD", minimumFractionDigits: 0}) }}</td>
         </tr>
         <template v-for="b in placed_bets">
-            <tr :key="b+'-spacer'"><td colspan=3></td></tr>
-            <tr :key="b+'-header'" :class="'bet-' + b.result">
+            <tr :key="b.datetime+'-spacer'"><td colspan=3></td></tr>
+            <tr :key="b.datetime+'-header'" :class="'bet-' + b.result">
                 <td colspan=2 v-html="PrintHTMLBetHeader(b)"></td>
                 <td class="money-column">{{( b.payout > 0 ? b.payout : -1 * b.amount).toLocaleString({}, {style: "currency", currency: "USD", minimumFractionDigits: 0})}}</td>
             </tr>
-            <tr v-for="l in b.legs" :key="l" :class="'leg-' + l.result">
+            <tr v-for="l in b.legs" :key="l.game+l.leg_line" :class="'leg-' + l.result">
                 <td v-html="'&nbsp;&nbsp;' + l.result[0].toUpperCase() + ': ' + PrintHTMLLeg(l)"></td>
                 <td>{{l.final_score}}</td>
                 <td></td>
@@ -231,7 +231,7 @@ export default {
           ]
         },
         {
-          'datetime': 'Fri Mar 02 2018 01:19:26 GMT-0600 (CST)',
+          'datetime': 'Fri Mar 02 2018 01:19:27 GMT-0600 (CST)',
           'amount': 52000,
           'bet_type': 'interest',
           'result': 'lose',
