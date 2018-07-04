@@ -80,10 +80,10 @@
                   <label v-bind:for="game.id + '.sb1'">
                     <input type="checkbox"
                       v-bind:id="game.id + '.sb1'"
-                      v-bind:value="{game:game.id, leg_type:'spread', leg_line:game.away + ' ' + AwaySpread(game.spread_home), odds:'-110'}"
+                      v-bind:value="{game:game.id, leg_type:'spread', leg_line:game.away + ' ' + ReverseSpread(game.spread_home), odds:'-110'}"
                       v-model="legs"
                       v-on:change="ToggleLeg($event); UpdateOdds()">
-                    <span>{{game.away + ' ' + AwaySpread(game.spread_home)}}</span>
+                    <span>{{game.away + ' ' + ReverseSpread(game.spread_home)}}</span>
                   </label>
                 </div>
                 <div id="ck-button">
@@ -131,6 +131,16 @@
           color="green"
           @click="checkForm()"> Place Bet
         </v-btn>
+        <v-btn class="white--text"
+          id="btnClearBets"
+          color="red"
+          @click="clearBets()"> Clear Bets
+        </v-btn>
+        <v-btn class="white--text"
+          id="btnShowResults"
+          color="green"
+          @click="showResults()"> Show Results
+        </v-btn>
       </p>
 
       <!-- Modal, initally hidden -->
@@ -142,7 +152,7 @@
               <v-card-actions>
                 <v-btn color="red" dark @click.native="bet_confirmation = false">Cancel</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="green" dark @click.native="bet_confirmation = false; PlaceBet()">Continue</v-btn>
+                <v-btn color="green" dark @click.native="bet_confirmation = false; placeBet()">Continue</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -199,69 +209,6 @@ export default {
       ],
       games_of_the_week: {},
       placed_bets: [],
-      /* [{
-        "datetime":"Fri Mar 02 2018 00:27:56 GMT-0600 (CST)",
-        "amount":50000,
-        "bet_type":"parlay",
-        "oddsString":"6:1",
-        "legs":[
-          {
-          "game":"s2017.w7.g2",
-          "leg_type":"spread",
-          "leg_line":"TB +3",
-          "odds":"-110"
-          },
-          {
-            "game":"s2017.w7.g3",
-            "leg_type":"total",
-            "leg_line":"▲ 39.5",
-            "odds":"-110"
-          },
-          {
-            "game":"s2017.w7.g6",
-            "leg_type":"spread",
-            "leg_line":"IND +3",
-            "odds":"-110"
-          }
-        ]
-        },
-        {"datetime":"Fri Mar 02 2018 00:28:43 GMT-0600 (CST)",
-        "amount":440000,
-        "bet_type":"moneyline",
-        "oddsString":"-110",
-        "legs":
-          [{"game":"s2017.w7.g12",
-          "leg_type":"moneyline",
-          "leg_line":"DEN -110",
-          "odds":"-110"}
-          ]},
-        {"datetime":"Fri Mar 02 2018 00:29:02 GMT-0600 (CST)",
-        "amount":100000,
-        "bet_type":"parlay",
-        "oddsString":"8:1",
-        "legs":
-          [{"game":"s2017.w7.g7",
-          "leg_type":"moneyline",
-          "leg_line":"ARI +148",
-          "odds":"+148"},
-          {"game":"s2017.w7.g8",
-          "leg_type":"spread",
-          "leg_line":"NYJ +3","odds":"-110"},
-          {"game":"s2017.w7.g10",
-          "leg_type":"total",
-          "leg_line":"▲ 40",
-          "odds":"-110"}
-        ]},
-        {"datetime":"Fri Mar 02 2018 00:29:34 GMT-0600 (CST)",
-        "amount":50000,
-        "bet_type":"total",
-        "oddsString":"10:11",
-        "legs":[{"game":"s2017.w7.g3",
-        "leg_type":"total",
-        "leg_line":"▲ 39.5",
-        "odds":"-110"}]
-        }  
-      ], */
       legs: [],
       odds: new Odds('10:11')
     }
@@ -269,7 +216,9 @@ export default {
 
   watch: {
     '$route' (to, from) {
-      this.$store.state.selected_week = this.$route.params.week_num   // need to make selected week a mutator
+      this.$store.commit('set_selected_week', this.$route.params.week_num)   
+      this.refreshGames()
+      this.clearBets()
     }
   },
 
@@ -316,19 +265,8 @@ export default {
 
   created: function () {
     // What to do when this object is created
-
-    //Build the games_of_the_week object
-    axios
-      .get('http://127.0.0.1:8000/games/week/s2017.w7')
-      .then(response => {
-        this.games_of_the_week = response.data
-      })
-      .catch(error => console.log(error))
-
-    
-    //for (let game of this.weekly_schedule) {
-    //  this.games_of_the_week[game] = this.game_data[game]
-    //}
+    this.$store.commit('set_selected_week', this.$route.params.week_num)
+    this.refreshGames()
   },
 
   mounted: function () {
@@ -336,6 +274,30 @@ export default {
 
   },
   methods: {
+
+    refreshGames: function () {
+      //Clear current rebuild the games_of_the_week object
+      this.games_of_the_week = {}
+
+      axios
+        .get('http://127.0.0.1:8000/games/week/s2017.w' + this.$store.state.selected_week)
+        .then(response => {
+          this.games_of_the_week = response.data
+        })
+        .catch(error => console.log(error))
+    },
+    
+    ReverseSpread: function (spread) {
+      if (spread[0] === '-') {
+        return '+' + spread.slice(1, spread.length)
+      }
+      else if (spread[0] === '+') {
+        return '-' + spread.slice(1, spread.length)
+      }
+      else {
+        return spread
+      }
+    },
 
     ToggleLeg: function (event) {
       // buttons and checkboxes carry their values differently, get either one
@@ -397,18 +359,6 @@ export default {
       }
     },
 
-    AwaySpread: function (homespread) {
-      if (homespread[0] === '-') {
-        return '+' + homespread.slice(1, homespread.length)
-      }
-      else if (homespread[0] === '+') {
-        return '-' + homespread.slice(1, homespread.length)
-      }
-      else {
-        return homespread
-      }
-    },
-
     checkForm: function (event) {
       this.errors = [];
       if(this.legs.length === 0) this.errors.push("Select at least one game.");
@@ -416,12 +366,22 @@ export default {
       if(!this.errors.length) this.bet_confirmation = true;
     },
 
-    PlaceBet: function (event) {
+    placeBet: function (event) {
       // move bet to placed bets and clear page for next bet
       this.placed_bets.push(this.current_bet)
       this.legs = []
       this.bet_amount = ''
-    }
+      this.odds = new Odds('10:11')
+    },
+
+    clearBets: function (event) {
+      // move bet to placed bets and clear page for next bet
+      this.placed_bets = []
+      this.legs = []
+      this.bet_amount = ''
+      this.odds = new Odds('10:11')
+    },
+
   }
 }
 </script>
@@ -450,7 +410,7 @@ tr {
 
 .game-header {
   padding:0.25em;
-  min-width: 85px;
+  min-width: 90px;
   /* text-align: center; */
 }
 

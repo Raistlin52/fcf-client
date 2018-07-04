@@ -72,6 +72,7 @@ export default new Vuex.Store({
         'home': 'BUF'
       }
     },
+    season_schedule: {},
     current_week: 7,
     selected_week: 7
   },
@@ -83,6 +84,17 @@ export default new Vuex.Store({
           state.game_data = response.data
         })
         .catch(error => console.log(error))
+
+      axios
+        .get('http://127.0.0.1:8000/seasonschedule/')
+        .then(response => {
+          state.season_schedule = response.data
+        })
+        .catch(error => console.log(error))
+    },
+
+    set_selected_week (state, week) {
+      state.selected_week = week
     }
   },
   actions: {

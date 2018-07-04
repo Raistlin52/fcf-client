@@ -38,214 +38,104 @@
 <script>
 /* eslint-disable */
 // import Odds from './Odds'
-import {betPrinter} from './mixins/betPrinter'
+import { betPrinter } from "./mixins/betPrinter";
 
 export default {
-  name: 'PastWeek',
+  name: "PastWeek",
   mixins: [betPrinter],
 
-  data () {
-    return {      
+  data() {
+    return {
       starting_bankroll: 200000,
       closing_bankroll: -312000,
-      placed_bets: [
+      placed_bets: [     // Need to add 'result' and 'payout' to bet and 'final_score' and 'result' to legs
         {
-          'datetime': 'Fri Mar 02 2018 01:17:30 GMT-0600 (CST)',
-          'amount':50000,
-          'bet_type': 'moneyline',
-          'oddsString': '+205',
-          'result': 'lose',
-          'payout': 0,
-          'legs': [
+          datetime: "Tue Jul 03 2018 15:46:40 GMT-0500 (Central Daylight Time)",
+          amount: 500000,
+          bet_type: "parlay",
+          oddsString: "26:1",
+          result: "lose",
+          payout: 0,
+          legs: [
             {
-              'game': 's2017.w6.g3',
-              'leg_type': 'moneyline',
-              'leg_line': 'DET +205',
-              'odds': '+205',
-              'final_score': '38 - 52',
-              'result': 'lose'
-              
+              game: 46,
+              leg_type: "moneyline",
+              leg_line: "MIA +638",
+              odds: "+638",
+              final_score: "20 - 17",
+              result: "win"
+            },
+            {
+              game: 99,
+              leg_type: "spread",
+              leg_line: "WAS -12.0",
+              odds: "-110",
+              final_score: "24 - 26",
+              result: "win"
+            },
+            {
+              game: 11,
+              leg_type: "total",
+              leg_line: "▼44.0",
+              odds: "-110",
+              final_score: "28 - 23",
+              result: "lose"
             }
           ]
         },
         {
-          'datetime': 'Fri Mar 02 2018 01:17:59 GMT-0600 (CST)',
-          'amount':500000,
-          'bet_type': 'parlay',
-          'oddsString': '6:1',
-          'result': 'lose',
-          'payout': 0,
-          'legs': [
+          datetime: "Tue Jul 03 2018 15:46:48 GMT-0500 (Central Daylight Time)",
+          amount: 600000,
+          bet_type: "moneyline",
+          oddsString: "-143",
+          result: "lose",
+          payout: 0,
+          legs: [
             {
-              'game': 's2017.w6.g9',
-              'leg_type': 'spread',
-              'leg_line': 'LAR +1',
-              'odds': '-110',
-              'final_score': '27 - 17',
-              'result': 'win'
-            },
-            {
-              'game': 's2017.w6.g11',
-              'leg_type': 'total',
-              'leg_line': '▲ 48.5',
-              'odds': '-110',
-              'final_score': '17 - 16',
-              'result': 'lose'
-            },
-            {
-              'game': 's2017.w6.g14',
-              'leg_type': 'spread',
-              'leg_line': 'IND +7',
-              'odds': '-110',
-              'final_score': '22 - 36',
-              'result': 'lose'
+              game: 11,
+              leg_type: "moneyline",
+              leg_line: "CAR -143",
+              odds: "-143",
+              final_score: "28 - 23",
+              result: "lose"
             }
           ]
         },
         {
-          'datetime': 'Fri Mar 02 2018 01:18:20 GMT-0600 (CST)',
-          'amount':50000,
-          'bet_type': 'moneyline',
-          'oddsString': '-717',
-          'result': 'lose',
-          'payout': 0,
-          'legs': [
+          datetime: "Tue Jul 03 2018 15:47:00 GMT-0500 (Central Daylight Time)",
+          amount: 600000,
+          bet_type: "moneyline",
+          oddsString: "+129",
+          result: "win",
+          payout: 1374000,
+          legs: [
             {
-              'game': 's2017.w6.g13',
-              'leg_type': 'moneyline',
-              'leg_line': 'DEN -717',
-              'odds': '-717',
-              'final_score': '23 - 10',
-              'result': 'lose'
+              game: 11,
+              leg_type: "moneyline",
+              leg_line: "PHI +129",
+              odds: "+129",
+              final_score: "28 - 23",
+              result: "win"
             }
           ]
         },
         {
-          'datetime': 'Fri Mar 02 2018 01:18:36 GMT-0600 (CST)',
-          'amount':10000,
-          'bet_type': 'parlay',
-          'oddsString': '10:1',
-          'result': 'win',
-          'payout': 70000,
-          'legs': [
-            {
-              'game': 's2017.w6.g8',
-              'leg_type': 'total',
-              'leg_line': '▲ 46',
-              'odds': '-110',
-              'final_score': '13 - 33',
-              'result': 'push'
-            },
-            {
-              'game': 's2017.w6.g10',
-              'leg_type': 'total',
-              'leg_line': '▲ 46.5',
-              'odds': '-110',
-              'final_score': '33 - 38',
-              'result': 'win'
-            },
-            {
-              'game': 's2017.w6.g12',
-              'leg_type': 'spread',
-              'leg_line': 'PIT +3.5',
-              'odds': '-110',
-              'final_score': '19 - 13',
-              'result': 'win'
-            },
-            {
-              'game': 's2017.w6.g13',
-              'leg_type': 'total',
-              'leg_line': '▼ 37.5',
-              'odds': '-110',
-              'final_score': '23 - 10',
-              'result': 'win'
-            }
-          ]
-        },
-        {
-          'datetime': 'Fri Mar 02 2018 01:18:56 GMT-0500 (EST)',
-          'amount':50000,
-          'bet_type': 'parlay',
-          'oddsString': '13:1',
-          'result': 'lose',
-          'payout': 0,
-          'legs': [
-            {
-              'game': 's2017.w6.g8',
-              'leg_type': 'moneyline',
-              'leg_line': 'GB -150',
-              'odds': '-150',
-              'final_score': '10 - 23',
-              'result': 'lose'
-            },
-            {
-              'game': 's2017.w6.g5',
-              'leg_type': 'spread',
-              'leg_line': 'MIA +14',
-              'odds': '-110',
-              'final_score': '20 - 17',
-              'result': 'win'
-            },
-            {
-              'game': 's2017.w6.g4',
-              'leg_type': 'moneyline',
-              'leg_line': 'NE -400',
-              'odds': '-400',
-              'final_score': '24 - 17',
-              'result': 'win'
-            },
-            {
-              'game': 's2017.w6.g3',
-              'leg_type': 'total',
-              'leg_line': '▼ 50.5',
-              'odds': '-110',
-              'final_score': '38 - 52',
-              'result': 'lose'
-            },
-            {
-              'game': 's2017.w6.g12',
-              'leg_type': 'total',
-              'leg_line': '▲ 46',
-              'odds': '-110',
-              'final_score': '19 - 13',
-              'result': 'lose'
-            }
-          ]
-        },
-        {
-          'datetime': 'Fri Mar 02 2018 01:19:26 GMT-0600 (CST)',
-          'amount': 50000,
-          'bet_type': 'moneyline',
-          'oddsString': '+140',
-          'result': 'win',
-          'payout': 120000,
-          'legs': [
-            {
-              'game': 's2017.w6.g11',
-              'leg_type': 'moneyline',
-              'leg_line': 'LAC +140',
-              'odds': '+140',
-              'final_score': '17 - 16',
-              'result': 'win'
-            }
-          ]
-        },
-        {
-          'datetime': 'Fri Mar 02 2018 01:19:27 GMT-0600 (CST)',
-          'amount': 52000,
-          'bet_type': 'interest',
-          'result': 'lose',
-          'payout': 0
+          datetime: "Fri Mar 02 2018 01:19:27 GMT-0600 (CST)",
+          amount: 52000,
+          bet_type: "interest",
+          result: "lose",
+          payout: 0
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {
@@ -260,41 +150,39 @@ a {
   color: #42b983;
 }
 
-
-
 .money-column {
   text-align: right;
   font-weight: bold;
 }
 
 .bet-win {
-  background-color: #00B000;
-  text-align:left;
+  background-color: #00b000;
+  text-align: left;
 }
 
 .bet-push {
-  background-color: #B0B0B0;
-  text-align:left;
+  background-color: #b0b0b0;
+  text-align: left;
 }
 
 .bet-lose {
-  background-color: #FF5050;
-  text-align:left;
+  background-color: #ff5050;
+  text-align: left;
 }
 
 .leg-win {
-  background-color: #A0F0A0;
-  text-align:left;
+  background-color: #a0f0a0;
+  text-align: left;
 }
 
 .leg-push {
-  background-color: #D0D0D0;
-  text-align:left;
+  background-color: #d0d0d0;
+  text-align: left;
 }
 
 .leg-lose {
-  background-color: #FF9090;
-  text-align:left;
+  background-color: #ff9090;
+  text-align: left;
 }
 
 .heading-label {
@@ -303,13 +191,13 @@ a {
 
 th {
   padding: 0.5em 0.5em;
-  border:1px solid #cbcbcb;
+  border: 1px solid #cbcbcb;
 }
 
 td {
-    border-left: 0px;
-    font-size: 0.9em;
-    padding: 0.3em 0.3em;
+  border-left: 0px;
+  font-size: 0.9em;
+  padding: 0.3em 0.3em;
 }
 
 .bet-amount {
