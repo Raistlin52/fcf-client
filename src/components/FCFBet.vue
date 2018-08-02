@@ -85,7 +85,7 @@
                         v-bind:value="{game:game.id, leg_type:'spread', leg_line:game.away + ' ' + ReverseSpread(game.spread_home), odds:'-110'}"
                         v-model="legs"
                         v-on:change="ToggleLeg($event); UpdateOdds()">
-                      <span>{{game.away + ' ' + ReverseSpread(game.spread_home)}}</span>
+                      <span>{{game.away + ' ' + (game.spread_home === "0" ? "(Pick)" : ReverseSpread(game.spread_home))}}</span>
                     </label>
                   </div>
                   <div id="ck-button">
@@ -95,7 +95,7 @@
                         v-bind:value="{game:game.id, leg_type:'spread', leg_line:game.home + ' ' + game.spread_home, odds:'-110'}"
                         v-model="legs"
                         v-on:change="ToggleLeg($event); UpdateOdds()">
-                      <span>{{game.home + ' ' + game.spread_home}}</span>
+                      <span>{{game.home + ' ' + (game.spread_home === "0" ? "(Pick)" : game.spread_home)}}</span>
                     </label>
                   </div>
                 </td>
@@ -362,9 +362,9 @@ export default {
 
     ReverseSpread: function(spread) {
       if (spread.charAt(0) === "-") {
-        return "+" + spread.slice(1, spread.length);
+        return "+" + spread.slice(1, spread.length)
       } else if (spread.charAt(0) === "+") {
-        return "-" + spread.slice(1, spread.length);
+        return "-" + spread.slice(1, spread.length)
       } else {
         return spread;
       }
