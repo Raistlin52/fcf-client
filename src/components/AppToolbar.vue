@@ -7,9 +7,9 @@
           <span>Week {{$store.state.selected_week}}</span>
           <v-icon>arrow_drop_down</v-icon>
         </v-toolbar-title>
-        <v-list dark dense>
-          <v-list-tile v-for="item in items" :key="item">
-            <v-list-tile-title v-text="item"></v-list-tile-title>
+        <v-list dense>
+          <v-list-tile v-for="item in items" :key="item.text">
+            <v-list-tile-title v-text="item.text" @click="navigate(item.url)"></v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -31,8 +31,29 @@
 export default {
   data: () => ({
     items: [
-      'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'
+      {
+        text: 'Week 1',
+        url: '/week/1'
+      },
+      {
+        text: 'Week 2',
+        url: '/week/2'
+      },
+      {
+        text: 'Week 3',
+        url: '/week/3'
+      },
+      {
+        text: 'Week 4',
+        url: '/week/4'
+      }
     ]
-  })
+  }),
+
+  methods: {
+    navigate (url) {
+      this.$router.push(url)
+    }
+  }
 }
 </script>

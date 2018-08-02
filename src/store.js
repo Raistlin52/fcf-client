@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+// import $ from 'jquery'
 
 Vue.use(Vuex)
 
@@ -78,15 +79,43 @@ export default new Vuex.Store({
   },
   mutations: {
     read_game_data (state) {
+      /*
+      $.ajax({
+        url: 'http://192.168.0.162:8000/gameswithid/',
+        async: true,
+        crossDomain: true,
+        success: function(response) {
+           console.log(response)
+           state.game_data = response;
+        },
+        error: function(request, status, error) {
+          console.log(status + " " + error)
+        }
+      })
+
+      $.ajax({
+        url: 'http://192.168.0.162:8000/seasonschedule/',
+        async: true,
+        crossDomain: true,
+        success: function(response) {
+           console.log(response)
+           state.season_schedule = response
+        },
+        error: function(request, status, error) {
+          console.log(status + " " + error)
+        }
+      })
+      */
+
       axios
-        .get('http://127.0.0.1:8000/gameswithid/')
+        .get('http://192.168.0.162:8000/gameswithid/')
         .then(response => {
           state.game_data = response.data
         })
         .catch(error => console.log(error))
 
       axios
-        .get('http://127.0.0.1:8000/seasonschedule/')
+        .get('http://192.168.0.162:8000/seasonschedule/')
         .then(response => {
           state.season_schedule = response.data
         })
