@@ -213,7 +213,6 @@ import Vue from "vue";
 import { betPrinter } from "./mixins/betPrinter";
 import moment from "moment-timezone";
 import axios from "axios";
-import $ from "jquery";
 
 Vue.filter("weekdayshortdate", function(value) {
   if (value) {
@@ -328,35 +327,18 @@ export default {
       //Clear current rebuild the games_of_the_week object
       this.games_of_the_week = {};
 
-      // this loses context in the jQuery call below
+      // this sometimes loses context
       var $vm = this
-      
-      $.ajax({
-        url: "http://192.168.0.162:8000/games/week/s2017.w" +
-            this.$store.state.selected_week + "/",
-        crossDomain: true,
-        success: function(response) {
-          $vm.games_of_the_week = response;
-        },
-        error: function(request, status, error) {
-          alert("ajax error")
-          console.log(status + " " + error)
-        }
-      })  
-
-/*
 
       axios
         .get(
-          "http://192.168.0.162:8000/games/week/s2017.w" +
-            this.$store.state.selected_week + "/"
+          process.env.VUE_APP_FCF_SERVER + '/games/week/s2017.w' +
+            this.$store.state.selected_week + '/'
         )
         .then(response => {
-          console.log(response.data)
           this.games_of_the_week = response.data
         })
         .catch(error => console.log(error)) 
-        */
         
     }, 
 
@@ -542,7 +524,7 @@ export default {
         switch(bet.result) {
           case 'win':
             let o = new Odds(bet.oddsString)
-            bet.winloss = bet.amount * o.winMultiple
+            bet.winloss = Math.floor(bet.amount * o.winMultiple)
             break;
           case 'lose':
             bet.winloss = -1 * bet.amount
@@ -552,8 +534,6 @@ export default {
             break;
         }
         total_winloss += bet.winloss
-
-        console.log(bet)
       })
 
       this.closing_bankroll = this.bankroll + total_winloss
@@ -603,9 +583,9 @@ export default {
       let home_final = this.$store.state.game_data[leg.game].home_final;
 
       if (this.homeOrAway(leg) === "home") {
-        if (this.parseValue(leg.leg_line) > home_final - away_final) {
+        if (this.parseValue(leg.leg_line) > away_final - home_final) {
           return "win";
-        } else if (this.parseValue(leg.leg_line) < home_final - away_final) {
+        } else if (this.parseValue(leg.leg_line) < away_final - home_final) {
           return "lose";
         } else {
           return "push";
