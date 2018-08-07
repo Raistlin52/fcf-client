@@ -583,17 +583,17 @@ export default {
       let home_final = this.$store.state.game_data[leg.game].home_final;
 
       if (this.homeOrAway(leg) === "home") {
-        if (this.parseValue(leg.leg_line) > away_final - home_final) {
+        if (this.parseValue(leg.leg_line) < home_final - away_final) {
           return "win";
-        } else if (this.parseValue(leg.leg_line) < away_final - home_final) {
+        } else if (this.parseValue(leg.leg_line) > home_final - away_final) {
           return "lose";
-        } else {
+        } else {s
           return "push";
         }
       } else if (this.homeOrAway(leg) === "away") {
-        if (this.parseValue(leg.leg_line) > home_final - away_final) {
+        if (this.parseValue(leg.leg_line) < away_final - home_final) {
           return "win";
-        } else if (this.parseValue(leg.leg_line) < home_final - away_final) {
+        } else if (this.parseValue(leg.leg_line) > away_final - home_final) {
           return "lose";
         } else {
           return "push";

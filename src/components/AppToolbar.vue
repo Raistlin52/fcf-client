@@ -46,6 +46,30 @@ export default {
       {
         text: 'Week 4',
         url: '/week/4'
+      },
+      {
+        text: 'Week 5',
+        url: '/week/5'
+      },
+      {
+        text: 'Week 6',
+        url: '/week/6'
+      },
+      {
+        text: 'Week 7',
+        url: '/week/7'
+      },
+      {
+        text: 'Week 8',
+        url: '/week/8'
+      },
+      {
+        text: 'Week 9',
+        url: '/week/9'
+      },
+      {
+        text: 'Week 10',
+        url: '/week/10'
       }
     ]
   }),
