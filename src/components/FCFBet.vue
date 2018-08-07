@@ -587,7 +587,7 @@ export default {
           return "win";
         } else if (this.parseValue(leg.leg_line) > home_final - away_final) {
           return "lose";
-        } else {s
+        } else {
           return "push";
         }
       } else if (this.homeOrAway(leg) === "away") {
